@@ -1,0 +1,36 @@
+﻿{% extends "top.html" %}
+{% block content %}
+<div class="well">
+    <h2 align='center'>Установить следующий ТП, идентификатор <a href="{{ url_for('cust_info', customer_id=form.customer_id) }}">{{ form.login }}</a></h2>
+    <form class="form-horizontal" action="" method="post" name="add">
+        {{form.hidden_tag()}}
+        
+        <div align="center">
+        {{ form.next_tc_id.label }}
+        {{ form.next_tc_id() }}
+        {% for error in form.errors.next_tc_id %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}
+        <br>
+        {{ form.create_access.label }}
+        {{ form.create_access() }}
+        {% for error in form.errors.create_access %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}
+        <br>
+        {{ form.stop_block.label }}
+        {{ form.stop_block() }}
+        {% for error in form.errors.stop_block %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}
+        </div>
+        <br>
+        <div class="control-group" align='center'>
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="{{ 'Сохранить' }}">
+                <input class="btn btn-primary" type="button" onclick="history.back();" value="{{ 'Отменить' }}">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

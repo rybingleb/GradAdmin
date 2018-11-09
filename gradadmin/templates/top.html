@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ g.tnsentry }} gradadmin{% block title %}{% endblock %}</title>
+    <link type="text/css" rel="stylesheet"
+            href="{{ url_for('static', filename='gradadmin.css')}}" />
+</head>
+<body>
+<a name="top">
+<table width="100%" style="border-style: none;background-color: #b4c0db;">
+    <tr>
+        {% if current_user.is_authenticated %}
+            {% if g.search_form %}
+                <td width="25%" style="border-style: none">
+                Поиск по идентификатору <form class="navbar-search pull-right" action="{{url_for('search')}}" method="post" name="search">{{g.search_form.hidden_tag()}}{{g.search_form.search(size=20,placeholder='Поиск',class="search-query")}}
+                <input class="btn btn-primary" type="submit" value="Найти">
+                </form>
+                </td>
+            {% endif %}
+        {% endif %}
+        {% for r in g.menu %}
+            <td style="border-style: none"><a href="{{r.href}}">{{r.text}}</a></td>
+        {% endfor %}
+        
+        {% if current_user.is_authenticated %}
+            <td align="right" style="border-style: none">{{ current_user.login }} <a href="{{ url_for('logout') }}">Выйти</a></td>
+        {% else %}
+            <td align="right" style="border-style: none"><a href="{{ url_for('login') }}">Войти</a></td>
+        {% endif %}
+    </tr>
+</table>
+<div align="right"><a href="mailto:G.Rybin@vconnect.ru?subject=GradAdmin%20{{ request.path }}">Сообщить об ошибке</a></div>
+{% include 'flash.html' %}
+<div>
+{% block content %} {% endblock %}
+</div>
+</body>
+</html>

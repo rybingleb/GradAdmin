@@ -1,0 +1,30 @@
+﻿{% extends "top.html" %}
+{% block content %}
+<div class="well">
+    <h2 align='center'>Изменение параметра</h2>
+    <form class="form-horizontal" action="" method="post" name="edit">
+        {{form.hidden_tag()}}
+        <table>
+            <tr>
+                <th>Именование параметра</th>
+                <th>Значение параметра</th>
+            </tr>
+            <tr>
+                <td>{{ pp.name }}</td>
+                <td>{{ form.param_value(maxlength = 3000, class = "span4") }}</td>
+                {% for error in form.errors.param_value %}
+                    <span class="help-inline">[{{error}}]</span><br>
+                {% endfor %}
+            </tr>
+        </table>
+        
+        <br>
+        <div class="control-group" align='center'>
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="{{ 'Сохранить' }}">
+                <input class="btn btn-primary" type="button" onclick="history.back();" value="{{ 'Отменить' }}">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

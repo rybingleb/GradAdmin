@@ -1,0 +1,31 @@
+﻿{% extends "top.html" %}
+{% block content %}
+<div class="well">
+    <h2 align='center'>Добавление новой аренды, лицевой счёт <a href="{{ url_for('cust_info', customer_id=form.customer_id) }}">{{ form.customer_id }}</a></h2>
+    <form class="form-horizontal" action="" method="post" name="add">
+        {{form.hidden_tag()}}
+        <table>
+        {% for field in form %}
+            {% if field.name != 'csrf_token' %}
+                <tr>
+                    <th align="right">{{ field.label }}</th>
+                    <td>{{ field }}
+                    {% for error in field.errors %}
+                        <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+                    {% endfor %}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+        
+        <br>
+        <div class="control-group" align='center'>
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="{{ 'Сохранить' }}">
+                <input class="btn btn-primary" type="button" onclick="history.back();" value="{{ 'Отменить' }}">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

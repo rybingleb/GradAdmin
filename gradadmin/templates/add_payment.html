@@ -1,0 +1,60 @@
+﻿{% extends "top.html" %}
+{% block content %}
+<div class="well">
+    <h2 align='center'>Новый платеж на лицевой счёт <a href="{{ url_for('cust_info', customer_id=form.customer_id) }}">{{ form.customer_id }}</a></h2>
+    <form class="form-horizontal" action="" method="post" name="add">
+        {{form.hidden_tag()}}
+        
+        <table>
+        <tr>
+        <th align="right">{{ form.payment_date.label }}</th>
+        <td>{{ form.payment_date() }}
+        {% for error in form.errors.payment_date %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}</td>
+        </tr>
+        <tr>
+        <th align="right">{{ form.payment_type_id.label }}</th>
+        <td>{{ form.payment_type_id() }}
+        {% for error in form.errors.payment_type_id %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}</td>
+        </tr>
+        <tr>
+        <th align="right">{{ form.amount.label }}</th>        
+        <td>{{ form.amount() }}
+        {% for error in form.errors.amount %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}
+        {{ form.debit.label }} {{ form.debit() }}
+        </td>
+        </tr>
+        <tr>
+        <th align="right">{{ form.sc_id.label }}</th>        
+        <td>{{ form.sc_id() }}
+        {% for error in form.errors.sc_id %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}</td>
+        </tr>
+        <tr>
+        <th align="right">{{ form.description.label }}</th>        
+        <td>{{ form.description(size=70) }}
+        {% for error in form.errors.description %}
+            <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+        {% endfor %}</td>
+        </tr>
+        <tr>
+        <td colspan="2">{{ form.create_access.label }} {{ form.create_access() }}</td>
+        </tr>
+        </table>
+        
+        <br>
+        <div class="control-group" align='center'>
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="{{ 'Сохранить' }}">
+                <input class="btn btn-primary" type="button" onclick="history.back();" value="{{ 'Отменить' }}">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

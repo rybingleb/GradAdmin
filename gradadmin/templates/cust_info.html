@@ -1,0 +1,323 @@
+﻿{% extends "top.html" %}
+<title>{% block title %}{% endblock %}</title>
+{% block content %}
+<h2>Лицевой счёт №{{ customer.id }}</h2>
+<table style="border-style: none;background-color: #b4c0db;">
+<tr>
+        <td style="border-style: none"><a href="#cust_info">Учетная информация пользователя</a></td>
+        <td style="border-style: none"><a href="#next_tc">Планируемые тарифы</a></td>
+        <td style="border-style: none"><a href="#payments">Платежи</a></td>
+        <td style="border-style: none"><a href="#rents">Аренды</a></td>
+        <td style="border-style: none"><a href="#params">Параметры абонента</a></td>
+        <td style="border-style: none"><a href="#one_time_seances">Одноразовые услуги</a></td>
+    </tr>
+</table>
+<br>
+<br>
+<a name="cust_info">
+<div>
+<table>
+<tr>
+    <th colspan="4" align="center">Учетная информация пользователя</th>
+</tr>
+<tr>
+    <td colspan="4" align="center">{{ customer.legalentity  }} лицо</td>
+</tr>
+<tr>
+    <td align="right"><b>Полное название:</b></td>
+    <td>{{ nvl(customer.name) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Сокращенное название:</b></td>
+    <td>{{ customer.short_name }}</td>
+</tr>
+<tr>
+    <td align="right"><b>ИНН:</b></td>
+    <td>{{ nvl(customer.tax_code) }}</td>
+    <td align="right"><b>Банк:</b></td>
+    <td>{{ nvl(customer.bank_name) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>КПП:</b></td>
+    <td>{{ nvl(customer.pdv_tax_code) }}</td>
+    <td align="right"><b>Адрес банка:</b></td>
+    <td>{{ nvl(customer.bank_location) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Фамилия:</b></td>
+    <td>{{ nvl(customer.cn_last_name) }}</td>
+    <td align="right"><b>Телефон:</b></td>
+    <td>{{ nvl(customer.phone) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Имя:</b></td>
+    <td>{{ nvl(customer.cn_first_name) }}</td>
+    <td align="right"><b>e-mail:</b></td>
+    <td>{{ nvl(customer.email) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Отчество:</b></td>
+    <td>{{ nvl(customer.cn_middle_name) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Область ( юр.):</b></td>
+    <td>{{ nvl(customer.primary_addr_domain) }}</td>
+    <td align="right"><b>Область ( физ.):</b></td>
+    <td>{{ nvl(customer.real_domain) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Индекс ( юр.):</b></td>
+    <td>{{ nvl(customer.primary_addr_postal) }}</td>
+    <td align="right"><b>Индекс ( физ.):</b></td>
+    <td>{{ nvl(customer.real_postal_code) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Город ( юр.):</b></td>
+    <td>{{ nvl(customer.primary_addr_city) }}</td>
+    <td align="right"><b>Город ( физ.):</b></td>
+    <td>{{ nvl(customer.real_city) }}</td>
+</tr>
+<tr>
+    <td align="right"><b>Адрес ( юр.):</b></td>
+    <td>{{ nvl(customer.primary_addr_street) }}</td>
+    <td align="right"><b>Адрес ( физ.):</b></td>
+    <td>{{ nvl(customer.real_street_addr) }}</td>
+</tr>
+</table>
+</div>
+
+<div>
+<br>
+<table>
+<tr>
+    <th align="right">Единый баланс</th>
+    <td align="right">{{ customer.balance }}</td>
+</tr>
+<tr>
+    <th align="right">нераспределенные платежи</th>
+    <td align="right">{{ nvl(customer.balance_unallotted) }}</td>
+</tr>
+<tr>
+    <th align="right">остатки по закрытым сервис-контрактам</th>
+    <td align="right">{{ customer.rests }}</td>
+</tr>
+<!--<tr>
+    <th align="right">Общее состояние счета</th>
+    <td align="right"> </td>
+</tr>-->
+</table>
+</div>
+<br>
+<div align="center">
+    <a href="{{ url_for('add_sc', customer_id=customer.id) }}">Открыть сервис-контракт</a>
+</div>
+<div>
+<br>
+<table>
+<tr>
+    <td colspan="10" align="center">Действующие сервис-контракты</td>
+</tr>
+<tr>
+    <th>Идентификатор</th>
+    <th>Услуга</th>
+    <th>Тариф</th>
+    <th>Начало</th>
+    <th>Окончание</th>
+    <th>Дебет</th>
+    <th>Кредит</th>
+    <th>Сальдо</th>
+    <th>IP</th>
+    <th></th>
+</tr>
+{% for sc in customer.sc_list %}
+    <tr>
+        <td>{{sc[1]}}</td>
+        <td>{{sc[2]}}</td>
+        <td>{{sc[3]}}</td>
+        <td>{{sc[4]}}</td>
+        <td>{{sc[5]}}</td>
+        <td align="right">{{sc[6]}}</td>
+        <td align="right">{{sc[7]}}</td>
+        <td align="right">{{sc[8]}}</td>
+        <td>{{sc[9]}}</td>
+        <td><a href="{{ url_for('edit_sc', customer_id=customer.id, sc_id=sc[0]) }}">изменить</a></td>
+    </tr>
+{% endfor %}
+<tr>
+    <td colspan="10" align="center">Устаревшие сервис-контракты</td>
+</tr>
+{% for sc in customer.old_sc_list %}
+    <tr>
+        <td bgcolor="#E4E4E4">{{sc[1]}}</td>
+        <td bgcolor="#E4E4E4">{{sc[2]}}</td>
+        <td bgcolor="#E4E4E4">{{sc[3]}}</td>
+        <td bgcolor="#E4E4E4">{{sc[4]}}</td>
+        <td bgcolor="#E4E4E4">{{sc[5]}}</td>
+        <td bgcolor="#E4E4E4" align="right">{{sc[6]}}</td>
+        <td bgcolor="#E4E4E4" align="right">{{sc[7]}}</td>
+        <td bgcolor="#E4E4E4" align="right">{{sc[8]}}</td>
+        <td bgcolor="#E4E4E4">{{sc[9]}}</td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+    
+<a name="next_tc">
+<a href="#top">наверх</a>
+<div class="control-group{% if customer.next_tc %} error{% endif %}">
+<br>
+<table>
+<tr>
+    <td colspan="4" align="center">Планируемые тарифы</td>
+</tr>
+<tr>
+    <th>Идентификатор</th>
+    <th>Тариф</th>
+    <th>Аб.плата</th>
+</tr>
+{% for next_tc in customer.next_tc %}
+    <tr>
+        <td>{{next_tc[0]}}</td>
+        <td>{{next_tc[1]}}</td>
+        <td align="right">{{next_tc[2]}}</td>
+        <td><a href="{{ url_for('set_next_tc', customer_id=customer.id, login=next_tc[0]) }}">установить следующий ТП</a></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+<a name="payments">
+<a href="#top">наверх</a>
+<div>
+<div align="center">
+    <a href="{{ url_for('add_payment', customer_id=customer.id) }}">Добавить платеж</a>
+</div>
+<br>
+<table>
+<tr>
+    <td colspan="8" align="center">Платежи</td>
+</tr>
+<tr>
+    <th>Дата</th>
+    <th>Тип</th>
+    <th>Знак</th>
+    <th>Сумма</th>
+    <th>Суб-счет</th>
+    <th>Примечания</th>
+    <th>Оператор</th>
+    <th>Время</th>
+</tr>
+{% for p in customer.payments %}
+    <tr>
+        <td>{{p[1]}}</td>
+        <td>{{p[2]}}</td>
+        <td>{{p[3]}}</td>
+        <td align="right">{{p[4]}}</td>
+        <td>{{p[5]}}</td>
+        <td>{{ nvl(p[6]) }}</td>
+        <td>{{p[7]}}</td>
+        <td>{{p[8]}}</td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+    
+<a name="rents">
+<a href="#top">наверх</a>
+<div>
+<div>
+<div align="center">
+    <a href="{{ url_for('add_rent', customer_id=customer.id) }}">Добавить аренду</a>
+</div>
+<br>
+<table>
+<tr>
+    <td colspan="9" align="center">Аренды</td>
+</tr>
+<tr>
+    <th>Номер договора</th>
+    <th>Дата договора</th>
+    <th>Дата начала списания аренды</th>
+    <th>Услуга</th>
+    <th>Стоимость</th>
+    <th>Кол-во</th>
+    <th>Основной логин</th>
+    <th>Сколько раз списать</th>
+    <th>Период списания</th>
+</tr>
+{% for r in customer.rents %}
+    <tr>
+        <td>{{r[0]}}</td>
+        <td>{{r[1]}}</td>
+        <td>{{r[2]}}</td>
+        <td>{{r[3]}}</td>
+        <td align="right">{{r[4]}}</td>
+        <td align="right">{{r[5]}}</td>
+        <td>{{r[6]}}</td>
+        <td align="right">{{r[7]}}</td>
+        <td>{{r[8]}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+</div>
+<a name="params">
+<a href="#top">наверх</a>
+
+<div align="center">
+    <a href="{{ url_for('add_param', customer_id=customer.id) }}">Добавить параметр</a>
+</div>
+<br>
+<div>
+<table>
+<tr>
+    <td colspan="5" align="center">Параметры абонента</th>
+</tr>
+<tr>
+    <th>Именование параметра</th>
+    <th>Значение параметра</th>
+    <th></th>
+    <th></th>
+</tr>
+{% for p in customer.params %}
+    <tr>
+        <td>{{p[1]}}</td>
+        <td>{{ nvl(p[2]) }}</td>
+        <td><a href="{{ url_for('edit_param', param_val_id=p[0]) }}">изменить</a></td>
+        <td><a href="{{ url_for('delete_param', param_val_id=p[0]) }}"><font color="red">удалить</font></a></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+<a name="one_time_seances">
+<a href="#top">наверх</a>
+<div>
+<div align="center">
+    <a href="{{ url_for('writeoff_service', customer_id=customer.id) }}">Списать услугу</a>
+</div>
+<br>
+<table>
+<tr>
+    <td colspan="5" align="center">Одноразовые услуги</th>
+</tr>
+<tr>
+    <th>Логин</th>
+    <th>Дата</th>
+    <th>Тип услуги</th>
+    <th>Объем</th>
+    <th></th>
+</tr>
+{% for s in customer.one_time_seances %}
+    <tr>
+        <td>{{s[2]}}</td>
+        <td>{{s[3]}}</td>
+        <td>{{s[4]}}</td>
+        <td align="right">{{s[5]}}</td>
+        <td><a href="{{ url_for('delete_writeoff', customer_id=customer.id, seance_id=s[6]) }}"><font color="red">удалить</font></a></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+<a href="#top">наверх</a>
+{% endblock %}

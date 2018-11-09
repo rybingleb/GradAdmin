@@ -1,0 +1,16 @@
+﻿{% extends "top.html" %}
+{% block content %}
+<h1 align="center">Поиск по маске {{query}}</h1>
+    <table>
+    <tr>
+        <th>Идентификатор</th>
+        <th>Лицевой счёт</th>
+    </tr>
+    {% for r in results %}
+        <tr>
+            <td>{{r[0]}}</td>
+            <td><a href="{{url_for('cust_info', customer_id=r[1])}}">{{r[1]}}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

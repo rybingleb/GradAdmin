@@ -1,0 +1,21 @@
+table {
+    margin: auto;
+    border-collapse:collapse;
+    border:1px solid #00280e;
+}
+
+td {
+    border:1px solid #00280e;
+    padding: 4px;
+}
+
+th {
+    background-color: #6A7CB7;
+    color: white;
+    border:1px solid #00280e;
+    padding: 4px;
+}
+
+form {
+    display: inline;
+}

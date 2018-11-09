@@ -1,0 +1,57 @@
+﻿{% extends "top.html" %}
+{% block content %}
+<div class="well">
+    <h2 align='center'>Изменение сервис-контракта, лицевой счёт <a href="{{ url_for('cust_info', customer_id=form.customer_id) }}">{{ form.customer_id }}</a></h2>
+    <form class="form-horizontal" action="" method="post" name="add">
+        {{form.hidden_tag()}}
+        <table>
+        <tr>
+            <th align="right">Идентификатор</th>
+            <td bgcolor="#E4E4E4">{{ form.login }}</td>
+        </tr>
+        <tr>
+            <th align="right">Тариф</th>
+            <td bgcolor="#E4E4E4">{{ form.tc_name }}</td>
+        </tr>
+        <tr>
+            <th align="right">Период с</th>
+            <td bgcolor="#E4E4E4">{{ form.begin_time }}</td>
+        </tr>
+        <tr>
+            <th align="right">{{ form.new_end_time.label }}</th>
+            <td>{{ form.new_end_time(value=form.end_time) }}</td>
+        </tr>
+        <tr>
+            <th align="right">{{ form.new_ip.label }}</th>
+            <td>{{ form.new_ip(value=form.ip) }}
+            {% for error in form.errors.new_ip %}
+                        <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+                    {% endfor %}</td>
+        </tr>
+        <tr>
+            <th align="right">{{ form.new_ip4pool_location_id.label }}</th>
+            <td>{{ form.new_ip4pool_location_id() }}
+            {% for error in form.errors.new_ip4pool_location_id %}
+                        <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+                    {% endfor %}</td>
+        </tr>
+        <tr>
+            <th align="right">{{ form.new_control_mode.label }}</th>
+            <td>{{ form.new_control_mode() }}
+            {% for error in form.errors.new_control_mode %}
+                        <span class="help-inline"><font color='red'>[{{error}}]</font></span><br>
+                    {% endfor %}</td>
+        </tr>
+        </table>
+        
+        <br>
+        <div class="control-group" align='center'>
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="{{ 'Сохранить' }}">
+                <input class="btn btn-primary" type="button" onclick="history.back();" value="{{ 'Отменить' }}">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
